@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <script src="/sky/lib/angular/angular.min.js"></script>
-<!-- <script src="/sky/resources/assets/js/jquery-3.2.1.min.js"></script> -->
+<script src="/sky/resources/assets/js/jquery-3.2.1.min.js"></script>
+<script src="/sky/public/js/app.js"></script>
+<script src="/sky/public/js/uploadPhoto.js"></script>
 <!-- <script src="/sky/resources/assets/js/bootstrap-datetimepicker.zh-cn.js"></script>
 <script src="/sky/resources/assets/js/moment.js"></script> -->
 
@@ -12,7 +14,7 @@
 <link
 	href="//cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css"
 	rel="stylesheet"> -->
-<title>添加商品</title>
+<title>添加商品</title> 
 <style type="text/css">
 .preview-image-box {
 	position: relative;
@@ -79,52 +81,51 @@
 </style>
 </head>
 <body>
-	<div>
-		<form id="uploadForm" action="{{url('submit/')}}" method="post">
+	<div data-ng-app="app">
+		<form id="uploadForm" action="{{url('admin/submit/')}}" method="post">
 			{{csrf_field()}} <input style="display: none;" name="image"
-				type="file" class="inputFile" /> <a class="user_name"
+				type="file" class="inputFile" /> <a class="user_name" name="user_name"
 				style="color: #777">
 				活动主持人：{{Auth::user()->name}}</a> 
 				<br><br> 活动主题： 
-				<input type="text" class="theme"> 
+				<input type="text" class="theme" name="theme"> 
 				<br><br> 活动时间：
-				<input type="datetime-local" value="" id="startTime" style="width:167px;"/> 
+				<input type="datetime-local" value="" class="startTime" style="width:167px;" name="startTime"/> 
 				<span style="margin-left:20px;margin-right:20px;">至</span>
-				<input type="datetime-local" value="" id="endTime" style="width:167px;"/>				
+				<input type="datetime-local" value="" class="endTime" style="width:167px;" name="endTime"/>				
 			
-			<div class="container">
-				<br> 活动封面：<button class="btn_upload">上传/修改封面</button>	
+			<div class="container" data-ng-controller="addPhotoCtrl as ctl">
+				<br> 活动封面：<input type="file" data-upload-img class="sp-upload-img"></button>	
 				<div class="preview-image-box">
 					<div class="inside-image-box">
-						<img class="uploaded-image" src="" alt="">
+						<img class="uploaded-image" src="/sky/resources/img/logo001.png" alt="" name="img">
 					</div>
-					<div class="loading-shadow">
+					<!-- <div class="loading-shadow">
 						<div class="loading-icon">
 							<img src="" alt="">
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<br>
-			<div class="col-md-12">
-				<img
-					style="max-width: 300px; max-height: 300px; margin: 0 auto; display: block;"
-					ng-src="<%imageSrc%>">
-			</div>
+			售价：<input type="radio" data-ng-model="model.isChecked" value="1"/>免费
+				<input type="radio" data-ng-model="model.isChecked" value="0"/>收费
+				<br>
 			<br>
+			最大参与人数：<input type="text" style="width: 68px" data-ng-model="lagMumber" name="lagMumber"><span style="margin-left: 10px">人</span>
 			<div>内容简介：</div>
-			<textarea rows="10" cols="40" ng-model="discription"></textarea>
+			<textarea rows="10" cols="40" data-ng-model="discription" name="discription"></textarea>
 			<br>
 			<input type="submit"></input>
 		</form>
 	</div>
 
 	<script>
-	/* $(function(e){
+/* 	 $(function(e){
 		$("#uploadForm").on('submit',function(e){
 			e.preventDefault();
 			$.ajax({ 
-				url:"{{url('uploads')}}",
+				url:"{{url('admin/submit/')}}",
 				type:"POST",
 				data:new FormData(this),
 				contentType:false,
@@ -157,11 +158,7 @@
 			});
 		
 	});	
-
- 	$('#startTime').datetimepicker({
-		format:'YYYY-MM-DD'
-	}); */
-	
+	 */
 
 	
 	</script>

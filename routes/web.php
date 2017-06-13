@@ -24,7 +24,7 @@ Route::group(['middleware' => 'auth','namespace' => 'Admin','prefix'=>'admin'],
 		function(){
 	Route::get('/','UserController@index');
 	Route::get('addGoods/','UserController@addGoods');
-	Route::post('/submit','UserController@uploadProduct');
+	Route::post('submit/','UserController@uploadProduct');
 });
 
 

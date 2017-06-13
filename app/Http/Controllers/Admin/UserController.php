@@ -5,40 +5,39 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use App\Mode\shows;
+use Faker\Provider\Image;
 
-class UserController extends Controller
-{
-    public function index(){
-		return view('admin/index');
+class UserController extends Controller {
+	public function index() {
+		return view ( 'admin/index' );
 	}
-	
-	public function addGoods(){
-		return view('admin/products/add');
+	public function addGoods() {
+		return view ( 'admin/products/add' );
 	}
-	public function upload(){
-		return view('welcome');
+	public function upload() {
+		return view ( 'welcome' );
 	}
-	
-	public function uploadProduct(Request $request){
-		if($request->ajax()){
-			DB::table('shows')->delete();
-			\App\Mode\shows::create([
-					'theme' => $request->get(''),
-					'user_name'=>Auth::user()->name,
-					'user_id' =>Auth::user()->id,
-					'start_time' => $request->get(''),
-					'end_time' => $request->get(''),
-					'price' => $request->get(''),
-					'Maxnumber' => $request->get(''),
-					'count' => $request->get(''),
-					'countent_introduction' => $request->get(''),
-					'link' => $request->get(''),
-					'img' => $request->get(''),
-					'state' => '0',
-			
-			]);
-		}
+	public function uploadProduct(Request $request) {
 		
-		return view('admin/products/add');
+		$show = new shows ();		
+		$show->theme = $request->get ( 'theme' );
+		$show->user_name = Auth::user ()->name;
+		$show->user_id = Auth::user ()->id;
+		$show->start_time = $request->get ( 'startTime' );
+		$show->end_time = $request->get ( 'endTime' );
+		$show->price = 0;
+		$show->Maxnumber = $request->get( 'lagMumber' );
+		$show->count = 23; /* $request->get(''), */
+		$show->content_introduction= $request->get ( 'discription' );
+		$show->link = $request->get ( 'img' );
+		$show->img = $request->get ( 'img' );
+		$show->state = '0';
+		if ($show->save ()) {
+			echo "成功";
+			return view ( 'admin/products/add' );
+		} else {
+			return redirect ()->back ()->withIput ()->withErrors ( '保存失败！' );
+		}
 	}
 }
